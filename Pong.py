@@ -108,8 +108,8 @@ def draw(canvas):
     if int(ball_pos[0]) <= BALL_RADIUS + PAD_WIDTH and int(ball_pos[1]) in range(paddle1_pos[1] - HALF_PAD_HEIGHT,
                                                                                  paddle1_pos[1] + HALF_PAD_HEIGHT, 1):
         ball_vel[0] = -ball_vel[0]
-        ball_vel[0] *= 1.1
-        ball_vel[1] *= 1.1
+        ball_vel[0] *= 1
+        ball_vel[1] *= 1
     elif int(ball_pos[0]) <= BALL_RADIUS + PAD_WIDTH:
         r_score += 1
         ball_init(True)
@@ -117,8 +117,8 @@ def draw(canvas):
     if int(ball_pos[0]) >= WIDTH + 1 - BALL_RADIUS - PAD_WIDTH and int(ball_pos[1]) in range(
             paddle2_pos[1] - HALF_PAD_HEIGHT, paddle2_pos[1] + HALF_PAD_HEIGHT, 1):
         ball_vel[0] = -ball_vel[0]
-        ball_vel[0] *= 1.1
-        ball_vel[1] *= 1.1
+        ball_vel[0] *= 1.2
+        ball_vel[1] *= 1.2
     elif int(ball_pos[0]) >= WIDTH + 1 - BALL_RADIUS - PAD_WIDTH:
         l_score += 1
         ball_init(False)
@@ -155,14 +155,43 @@ def keyup(event):
         paddle2_vel = 0
 
 
+#Super simple AI with ball tracking and event handling
+
+def Agent():
+    global ball_pos, paddle1_pos, paddle1_vel
+
+   # Check which way ball is going - if coming towards act if not dont act
+    if ball_vel[0] < 0:
+
+        if int(ball_pos[1]) in range(0, paddle1_pos[1] - HALF_PAD_HEIGHT):        
+          keydown(pygame.event.Event(pygame.KEYDOWN,  {'unicode': 's', 'key': 115, 'mod': 0, 'scancode': 39}))
+          print("up")
+        elif int(ball_pos[1]) in range(paddle1_pos[1] + HALF_PAD_HEIGHT, HEIGHT):
+          keydown(pygame.event.Event(pygame.KEYDOWN,{'unicode': 'z', 'key': 122, 'mod': 0, 'scancode': 52}))  
+          print("down")
+        elif int(ball_pos[1]) in range(paddle1_pos[1] - 2, paddle1_pos[1] + 2):
+          paddle1_vel = 0
+    
+    else:
+        paddle1_vel = 0
+
+
 init()
 
 
 while True:
 
     draw(window)
+    print("P1", paddle1_pos[1])
+    print("Ball", ball_pos[1])
+    print("Velocity", paddle1_vel)
+    Agent()
+    print("V2", paddle1_vel)
 
     for event in pygame.event.get():
+        
+
+
 
         if event.type == KEYDOWN:
             keydown(event)
