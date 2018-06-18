@@ -1,1 +1,2 @@
-# A game of Pong adapted from https://gist.github.com/vinothpandian/4337527
+# A game of Pong 
+adapted from https://gist.github.com/vinothpandian/4337527
